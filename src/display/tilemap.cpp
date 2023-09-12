@@ -66,8 +66,9 @@ static const int atAreaW = autotileW * atFrames;
 static const int tsLaneW = tilesetW / 1;
 
 /* Map viewport size */
-static const int viewpW = 21;
-static const int viewpH = 16;
+// EDIT
+static const int viewpW = 32;
+static const int viewpH = 18;
 
 static const size_t zlayersMax = viewpH + 5;
 

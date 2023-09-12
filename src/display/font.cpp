@@ -501,6 +501,8 @@ _TTF_Font *Font::getSdlFont()
 		style |= TTF_STYLE_ITALIC;
 
 	TTF_SetFontStyle(p->sdlFont, style);
-
+	// EDIT
+	TTF_SetFontHinting(p->sdlFont, TTF_HINTING_MONO);
+	
 	return p->sdlFont;
 }

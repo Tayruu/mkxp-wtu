@@ -84,7 +84,9 @@ struct VorbisSource : ALDataSource
 	      currentFrame(0)
 	{
 		int error = ov_open_callbacks(&src, &vf, 0, 0, OvCallbacks);
-
+		// EDIT
+		int sample_length = ov_pcm_total(&vf, -1);
+		
 		if (error)
 		{
 			SDL_RWclose(&src);
@@ -138,6 +140,10 @@ struct VorbisSource : ALDataSource
 			if (!strcmp(comment, "LOOPLENGTH"))
 				loop.length = strtol(sep+1, 0, 10);
 
+			// EDIT
+			if(loop.start > 0 && loop.length == 0)
+				loop.length = (sample_length - loop.start);
+			
 			*sep = '=';
 		}
 

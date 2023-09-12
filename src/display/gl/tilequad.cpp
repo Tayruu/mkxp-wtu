@@ -169,20 +169,21 @@ static void buildFrameInt(const IntRect &rect,
 	int y1 = rect.y; int y2 = y1 + h;
 
 	int i = 0;
+	// EDIT
 	/* Corners - tl, tr, br, bl */
-	quadRects[i++] = FloatRect(x1,   y1,   2, 2);
-	quadRects[i++] = FloatRect(x2-2, y1,   2, 2);
-	quadRects[i++] = FloatRect(x2-2, y2-2, 2, 2);
-	quadRects[i++] = FloatRect(x1,   y2-2, 2, 2);
+	quadRects[i++] = FloatRect(x1,   y1,   8, 8);
+	quadRects[i++] = FloatRect(x2-8, y1,   8, 8);
+	quadRects[i++] = FloatRect(x2-8, y2-8, 8, 8);
+	quadRects[i++] = FloatRect(x1,   y2-8, 8, 8);
 
 	/* Sides - l, r, t, b */
-	quadRects[i++] = FloatRect(x1,   y1+2, 2,   h-4);
-	quadRects[i++] = FloatRect(x2-2, y1+2, 2,   h-4);
-	quadRects[i++] = FloatRect(x1+2, y1,   w-4, 2);
-	quadRects[i++] = FloatRect(x1+2, y2-2, w-4, 2);
+	quadRects[i++] = FloatRect(x1,   y1+8, 8,   h-16);
+	quadRects[i++] = FloatRect(x2-8, y1+8, 8,   h-16);
+	quadRects[i++] = FloatRect(x1+8, y1,   w-16, 8);
+	quadRects[i++] = FloatRect(x1+8, y2-8, w-16, 8);
 
 	/* Center */
-	quadRects[i++] = FloatRect(x1+2, y1+2, w-4, h-4);
+	quadRects[i++] = FloatRect(x1+8, y1+8, w-16, h-16);
 }
 
 int buildFrameSource(const IntRect &rect,

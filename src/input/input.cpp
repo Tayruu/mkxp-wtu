@@ -730,9 +730,12 @@ struct InputPrivate
     void recalcRepeatTime(unsigned int fps) {
         double framems = 1.f / fps;
         
+		// EDIT
         // Approximate time in milliseconds
-        double start = (rgssVer >= 2) ? 0.375 : 0.400;
-        double delay = 0.100;
+        //double start = (rgssVer >= 2) ? 0.375 : 0.400;
+        //double delay = 0.100;
+        double start = 0.350;
+        double delay = 0.050;
         
         repeatStart = ceil(start / framems);
         repeatDelay = ceil(delay / framems);

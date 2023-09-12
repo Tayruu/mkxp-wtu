@@ -133,15 +133,16 @@ Config::Config() {}
 
 void Config::read(int argc, char *argv[]) {
     auto optsJ = json::object({
+	// EDIT
         {"rgssVersion", 0},
         {"debugMode", false},
         {"printFPS", false},
-        {"winResizable", true},
+        {"winResizable", false}, //
         {"fullscreen", false},
         {"fixedAspectRatio", true},
         {"smoothScaling", false},
         {"lanczos3Scaling", false},
-        {"vsync", false},
+        {"vsync", true}, //
         {"defScreenW", 0},
         {"defScreenH", 0},
         {"windowTitle", ""},
@@ -155,20 +156,21 @@ void Config::read(int argc, char *argv[]) {
         {"preferMetalRenderer", false},
 #endif
         {"subImageFix", false},
-#ifdef __WIN32__
-        {"enableBlitting", false},
-#else
+// EDIT
+//#ifdef __WIN32__
+//        {"enableBlitting", false},
+//#else
         {"enableBlitting", true},
-#endif
+//#endif
         {"integerScalingActive", false},
         {"integerScalingLastMile", true},
         {"maxTextureSize", 0},
         {"gameFolder", ""},
-        {"anyAltToggleFS", false},
+        {"anyAltToggleFS", true}, //
         {"enableReset", true},
-        {"enableSettings", true},
+        {"enableSettings", false}, //
         {"allowSymlinks", false},
-        {"dataPathOrg", ""},
+        {"dataPathOrg", "Aether Games"}, //
         {"dataPathApp", ""},
         {"iconPath", ""},
         {"execName", "Game"},
@@ -183,21 +185,22 @@ void Config::read(int argc, char *argv[]) {
         {"preloadScript", json::array({})},
         {"RTP", json::array({})},
         {"fontSub", json::array({})},
-        {"rubyLoadpath", json::array({})},
+        {"rubyLoadpath", json::array({})}, // Presently unused
         {"JITEnable", false},
         {"JITVerboseLevel", 0},
         {"JITMaxCache", 100},
         {"JITMinCalls", 10000},
         {"YJITEnable", false},
         {"bindingNames", json::object({
-            {"a", "A"},
-            {"b", "B"},
-            {"c", "C"},
-            {"x", "X"},
-            {"y", "Y"},
-            {"z", "Z"},
-            {"l", "L"},
-            {"r", "R"}
+	    // EDIT
+            {"a", "--"},
+            {"b", "Cancel"},
+            {"c", "Confirm"},
+            {"x", "Menu"},
+            {"y", "Map"},
+            {"z", "--"},
+            {"l", "L Trigger"},
+            {"r", "R Trigger"}
         })}
     });
     

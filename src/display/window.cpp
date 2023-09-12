@@ -78,21 +78,23 @@ static const Corners<IntRect> cornersSrc =
 
 static const Sides<IntRect> scrollArrowSrc =
 {
-	IntRect(144, 24,  8, 16),
-	IntRect(168, 24,  8, 16),
-	IntRect(152, 16, 16,  8),
-	IntRect(152, 40, 16,  8)
+	// EDIT
+	IntRect(144, 26, 10, 16),
+	IntRect(166, 26, 10, 16),
+	IntRect(152, 16, 16, 10),
+	IntRect(152, 38, 16, 10)
 };
 
 /* Cycling */
 static const uint8_t cursorAniAlpha[] =
 {
+	// EDIT
 	/* Fade out */
-	0xFF, 0xF7, 0xEF, 0xE7, 0xDF, 0xD7, 0xCF, 0xC7,
-	0xBF, 0xB7, 0xAF, 0xA7, 0x9F, 0x97, 0x8F, 0x87,
+	0xFF//, 0xF7, 0xEF, 0xE7, 0xDF, 0xD7, 0xCF, 0xC7,
+	//0xBF, 0xB7, 0xAF, 0xA7, 0x9F, 0x97, 0x8F, 0x87,
 	/* Fade in */
-	0x7F, 0x87, 0x8F, 0x97, 0x9F, 0xA7, 0xAF, 0xB7,
-	0xBF, 0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7
+	//0x7F, 0x87, 0x8F, 0x97, 0x9F, 0xA7, 0xAF, 0xB7,
+	//0xBF, 0xC7, 0xCF, 0xD7, 0xDF, 0xE7, 0xEF, 0xF7
 };
 
 static elementsN(cursorAniAlpha);
@@ -476,10 +478,11 @@ struct WindowPrivate
 
 		Sides<IntRect> scrollArrows;
 
-		scrollArrows.l = IntRect(4, scroll.y, 8, 16);
-		scrollArrows.r = IntRect(size.x - 12, scroll.y, 8, 16);
-		scrollArrows.t = IntRect(scroll.x, 4, 16, 8);
-		scrollArrows.b = IntRect(scroll.x, size.y - 12, 16, 8);
+		// EDIT
+		scrollArrows.l = IntRect(4, scroll.y, 10, 16);
+		scrollArrows.r = IntRect(size.x - 12, scroll.y, 10, 16);
+		scrollArrows.t = IntRect(size.x - 26, 4, 16, 10);
+		scrollArrows.b = IntRect(size.x - 26, size.y - 14, 16,10);
 
 		if (contents)
 		{

@@ -1,4 +1,4 @@
-extern const char module_rpg3[] = R"
+extern const char module_rpg3[] = R"#(
 module RPG
   class Map
     class Encounter
@@ -966,4 +966,4 @@ module RPG
   end
 
 end
- ";
+ )#";

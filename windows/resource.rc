@@ -3,7 +3,6 @@
 #include "resource.h"
 
 IDI_APPICON ICON "icon.ico"
-IDI_MANIFEST RT_MANIFEST "mkxpz.manifest"
 
 VS_VERSION_INFO VERSIONINFO
 FILEVERSION    2,4,2,0

@@ -133,7 +133,6 @@ RB_METHOD(mkxpSystemMemory);
 RB_METHOD(mkxpReloadPathCache);
 RB_METHOD(mkxpAddPath);
 RB_METHOD(mkxpRemovePath);
-RB_METHOD(mkxpFileExists);
 RB_METHOD(mkxpLaunch);
 
 RB_METHOD(mkxpGetJSONSetting);
@@ -161,13 +160,14 @@ static void mriBindingInit() {
     viewportBindingInit();
     planeBindingInit();
     
-    if (rgssVer == 1) {
+	// EDIT
+    /*if (rgssVer == 1) {*/
         windowBindingInit();
         tilemapBindingInit();
-    } else {
+    /*} else {
         windowVXBindingInit();
         tilemapVXBindingInit();
-    }
+    }*/
     
     inputBindingInit();
     audioBindingInit();
@@ -185,7 +185,8 @@ static void mriBindingInit() {
     
     httpBindingInit();
     
-    if (rgssVer >= 3) {
+	// EDIT
+    /*if (rgssVer >= 3) {*/
         _rb_define_module_function(rb_mKernel, "rgss_main", mriRgssMain);
         _rb_define_module_function(rb_mKernel, "rgss_stop", mriRgssStop);
         
@@ -193,24 +194,26 @@ static void mriBindingInit() {
         _rb_define_module_function(rb_mKernel, "msgbox_p", mriP);
         
         rb_define_global_const("RGSS_VERSION", rb_utf8_str_new_cstr("3.0.1"));
-    } else {
+    /*} else {
         _rb_define_module_function(rb_mKernel, "print", mriPrint);
         _rb_define_module_function(rb_mKernel, "p", mriP);
         
         rb_define_alias(rb_singleton_class(rb_mKernel), "_mkxp_kernel_caller_alias",
                         "caller");
         _rb_define_module_function(rb_mKernel, "caller", _kernelCaller);
-    }
+    }*/
     
-    if (rgssVer == 1)
+    /*if (rgssVer == 1)
         rb_eval_string(module_rpg1);
     else if (rgssVer == 2)
         rb_eval_string(module_rpg2);
     else if (rgssVer == 3)
         rb_eval_string(module_rpg3);
     else
-        assert(!"unreachable");
-    
+        assert(!"unreachable");*/
+	// EDIT
+    rb_eval_string(module_rpg3);
+	
     VALUE mod = rb_define_module("System");
     _rb_define_module_function(mod, "delta", mkxpDelta);
     _rb_define_module_function(mod, "uptime", mkxpDelta);
@@ -244,7 +247,6 @@ static void mriBindingInit() {
     _rb_define_module_function(mod, "reload_cache", mkxpReloadPathCache);
     _rb_define_module_function(mod, "mount", mkxpAddPath);
     _rb_define_module_function(mod, "unmount", mkxpRemovePath);
-    _rb_define_module_function(mod, "file_exist?", mkxpFileExists);
     _rb_define_module_function(mod, "launch", mkxpLaunch);
     
     _rb_define_module_function(mod, "default_font_family=", mkxpSetDefaultFontFamily);
@@ -261,30 +263,18 @@ static void mriBindingInit() {
     rb_gv_set("MKXP", Qtrue);
     
     VALUE debug = rb_bool_new(shState->config().editor.debug);
-    if (rgssVer == 1)
+	// EDIT
+    /*if (rgssVer == 1)
         rb_gv_set("DEBUG", debug);
     else if (rgssVer >= 2)
-        rb_gv_set("TEST", debug);
-    
+        rb_gv_set("TEST", debug);*/
+	
+    rb_gv_set("DEBUG", debug);
     rb_gv_set("BTEST", rb_bool_new(shState->config().editor.battleTest));
     
-#ifdef MKXPZ_BUILD_XCODE
-    std::string version = std::string(MKXPZ_VERSION "/") + getPlistValue("GIT_COMMIT_HASH");
-    VALUE vers = rb_utf8_str_new_cstr(version.c_str());
-#else
-    VALUE vers = rb_utf8_str_new_cstr(MKXPZ_VERSION "/" MKXPZ_GIT_HASH);
-#endif
+    VALUE vers = rb_utf8_str_new_cstr(MKXPZ_VERSION);
     rb_str_freeze(vers);
     rb_define_const(mod, "VERSION", vers);
-    
-    // Automatically load zlib if it's present -- the correct way this time
-    int state;
-    rb_eval_string_protect("require('zlib') if !Kernel.const_defined?(:Zlib)", &state);
-    if (state) {
-        Debug() << "Could not load Zlib. If this is important, make sure Ruby was built with static extensions, or that"
-        << ((MKXPZ_PLATFORM == MKXPZ_PLATFORM_MACOS) ? "zlib.bundle" : "zlib.so")
-        << "is present and reachable by Ruby's loadpath.";
-    }
     
     // Set $stdout and its ilk accordingly on Windows
     // I regret teaching you that word
@@ -333,7 +323,8 @@ RB_METHOD(mriP) {
 
 RB_METHOD(mkxpDelta) {
     RB_UNUSED_PARAM;
-    return rb_float_new(shState->runTime());
+    
+    return ULL2NUM(shState->runTime());
 }
 
 RB_METHOD(mkxpDataDirectory) {
@@ -576,18 +567,6 @@ RB_METHOD(mkxpRemovePath) {
     return path;
 }
 
-RB_METHOD(mkxpFileExists) {
-    RB_UNUSED_PARAM;
-    
-    VALUE path;
-    rb_scan_args(argc, argv, "1", &path);
-    SafeStringValue(path);
-    
-    if (shState->fileSystem().exists(RSTRING_PTR(path)))
-        return Qtrue;
-    return Qfalse;
-}
-
 RB_METHOD(mkxpSetDefaultFontFamily) {
     RB_UNUSED_PARAM;
     
@@ -680,27 +659,29 @@ RB_METHOD(mkxpLaunch) {
     return RUBY_Qnil;
 }
 
-json5pp::value loadUserSettings() {
-    json5pp::value ret;
+json5pp::value userSettings;
+
+void loadUserSettings() {
+    if (!userSettings.is_null())
+        return;
+    
     VALUE cpath = rb_utf8_str_new_cstr(shState->config().userConfPath.c_str());
     
     if (rb_funcall(rb_cFile, rb_intern("exists?"), 1, cpath) == Qtrue) {
         VALUE f = rb_funcall(rb_cFile, rb_intern("open"), 2, cpath, rb_str_new("r", 1));
         VALUE data = rb_funcall(f, rb_intern("read"), 0);
         rb_funcall(f, rb_intern("close"), 0);
-        ret = json5pp::parse5(RSTRING_PTR(data));
+        userSettings = rb2json(data);
     }
     
-    if (!ret.is_object())
-        ret = json5pp::object({});
-    
-    return ret;
+    if (!userSettings.is_object())
+        userSettings = json5pp::object({});
 }
 
-void saveUserSettings(json5pp::value &settings) {
+void saveUserSettings() {
     VALUE cpath = rb_utf8_str_new_cstr(shState->config().userConfPath.c_str());
     VALUE f = rb_funcall(rb_cFile, rb_intern("open"), 2, cpath, rb_str_new("w", 1));
-    rb_funcall(f, rb_intern("write"), 1, rb_utf8_str_new_cstr(settings.stringify5(json5pp::rule::space_indent<>()).c_str()));
+    rb_funcall(f, rb_intern("write"), 1, rb_utf8_str_new_cstr(userSettings.stringify5(json5pp::rule::space_indent<>()).c_str()));
     rb_funcall(f, rb_intern("close"), 0);
 }
 
@@ -711,8 +692,8 @@ RB_METHOD(mkxpGetJSONSetting) {
     rb_scan_args(argc, argv, "1", &sname);
     SafeStringValue(sname);
     
-    auto settings = loadUserSettings();
-    auto &s = settings.as_object();
+    loadUserSettings();
+    auto &s = userSettings.as_object();
     
     if (s[RSTRING_PTR(sname)].is_null()) {
         return json2rb(shState->config().raw.as_object()[RSTRING_PTR(sname)]);
@@ -729,11 +710,10 @@ RB_METHOD(mkxpSetJSONSetting) {
     rb_scan_args(argc, argv, "2", &sname, &svalue);
     SafeStringValue(sname);
     
-    auto settings = loadUserSettings();
-    auto &s = settings.as_object();
-    s[RSTRING_PTR(sname)] = rb2json(svalue);
-    saveUserSettings(settings);
+    loadUserSettings();
+    userSettings.as_object()[RSTRING_PTR(sname)] = rb2json(svalue);
     
+    saveUserSettings();
     return Qnil;
 }
 
@@ -889,12 +869,12 @@ static void runRMXPScripts(BacktraceData &btData) {
     const std::string &scriptPack = conf.game.scripts;
     
     if (scriptPack.empty()) {
-        showMsg("No script file has been specified. Check the game's INI and try again.");
+        showMsg("No game scripts specified (missing Game.ini?)");
         return;
     }
     
     if (!shState->fileSystem().exists(scriptPack.c_str())) {
-        showMsg("Unable to load scripts from '" + scriptPack + "'");
+        showMsg("Unable to open '" + scriptPack + "'");
         return;
     }
     
@@ -1120,29 +1100,13 @@ static void mriBindingExecute() {
     rubyArgsC.push_back("-e ");
     void *node;
     if (conf.jit.enabled) {
-#if RAPI_FULL >= 310
-        // Ruby v3.1.0 renamed the --jit options to --mjit.
-        std::string verboseLevel("--mjit-verbose=");
-        std::string maxCache("--mjit-max-cache=");
-        std::string minCalls("--mjit-min-calls=");
-        rubyArgsC.push_back("--mjit");
-#else
-        std::string verboseLevel("--jit-verbose=");
-        std::string maxCache("--jit-max-cache=");
-        std::string minCalls("--jit-min-calls=");
+        std::string verboseLevel("--jit-verbose="); verboseLevel += std::to_string(conf.jit.verboseLevel);
+        std::string maxCache("--jit-max-cache="); maxCache += std::to_string(conf.jit.maxCache);
+        std::string minCalls("--jit-min-calls="); minCalls += std::to_string(conf.jit.minCalls);
         rubyArgsC.push_back("--jit");
-#endif
-        verboseLevel += std::to_string(conf.jit.verboseLevel);
-        maxCache += std::to_string(conf.jit.maxCache);
-        minCalls += std::to_string(conf.jit.minCalls);
-
         rubyArgsC.push_back(verboseLevel.c_str());
         rubyArgsC.push_back(maxCache.c_str());
         rubyArgsC.push_back(minCalls.c_str());
-        node = ruby_options(rubyArgsC.size(), const_cast<char**>(rubyArgsC.data()));
-    } else if (conf.yjit.enabled) {
-        rubyArgsC.push_back("--yjit");
-        // TODO: Maybe support --yjit-exec-mem-size, --yjit-call-threshold
         node = ruby_options(rubyArgsC.size(), const_cast<char**>(rubyArgsC.data()));
     } else {
         node = ruby_options(rubyArgsC.size(), const_cast<char**>(rubyArgsC.data()));

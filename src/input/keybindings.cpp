@@ -67,6 +67,7 @@ struct CtrlBindingData
 /* Common */
 static const KbBindingData defaultKbBindings[] =
 {
+	// EDIT
 	{ SDL_SCANCODE_LEFT,   Input::Left  },
 	{ SDL_SCANCODE_RIGHT,  Input::Right },
 	{ SDL_SCANCODE_UP,     Input::Up    },
@@ -76,9 +77,9 @@ static const KbBindingData defaultKbBindings[] =
 	{ SDL_SCANCODE_RETURN, Input::C     },
 	{ SDL_SCANCODE_ESCAPE, Input::B     },
 	{ SDL_SCANCODE_KP_0,   Input::B     },
-	{ SDL_SCANCODE_LSHIFT, Input::A     },
+	//{ SDL_SCANCODE_LSHIFT, Input::A     },
 	{ SDL_SCANCODE_X,      Input::B     },
-	{ SDL_SCANCODE_D,      Input::Z     },
+	//{ SDL_SCANCODE_D,      Input::Z     },
 	{ SDL_SCANCODE_Q,      Input::L     },
 	{ SDL_SCANCODE_W,      Input::R     },
 	{ SDL_SCANCODE_A,      Input::X     },
@@ -104,12 +105,13 @@ static elementsN(defaultKbBindings2);
 
 static const CtrlBindingData defaultCtrlBindings[] =
 {
-	{ SDL_CONTROLLER_BUTTON_X, Input::A  },
+	// EDIT
+	{ SDL_CONTROLLER_BUTTON_X, Input::Y  }, // Xbox X, Map Button
 	{ SDL_CONTROLLER_BUTTON_B, Input::B  },
 	{ SDL_CONTROLLER_BUTTON_A, Input::C },
-	{ SDL_CONTROLLER_BUTTON_Y, Input::X  },
-	{ SDL_CONTROLLER_BUTTON_LEFTSTICK, Input::Y  },
-	{ SDL_CONTROLLER_BUTTON_RIGHTSTICK, Input::Z },
+	{ SDL_CONTROLLER_BUTTON_Y, Input::X  }, // Xbox Y, Menu Button
+	//{ SDL_CONTROLLER_BUTTON_LEFTSTICK, Input::Y  },
+	//{ SDL_CONTROLLER_BUTTON_RIGHTSTICK, Input::Z },
 	{ SDL_CONTROLLER_BUTTON_LEFTSHOULDER, Input::L  },
 	{ SDL_CONTROLLER_BUTTON_RIGHTSHOULDER, Input::R  },
     
@@ -172,7 +174,9 @@ struct Header
 static void buildPath(const std::string &dir, uint32_t rgssVersion,
                       char *out, size_t outSize)
 {
-	snprintf(out, outSize, "%skeybindings.mkxp%u", dir.c_str(), rgssVersion);
+	// EDIT
+	//snprintf(out, outSize, "%skeybindings.mkxp%u", dir.c_str(), rgssVersion);
+	snprintf(out, outSize, "%sKeybindings.conf", "System/");
 }
 
 static bool writeBindings(const BDescVec &d, const std::string &dir,
@@ -212,7 +216,9 @@ static bool writeBindings(const BDescVec &d, const std::string &dir,
 
 void storeBindings(const BDescVec &d, const Config &conf)
 {
-    writeBindings(d, conf.customDataPath, conf.rgssVersion);
+	// EDIT
+	//writeBindings(d, conf.customDataPath, conf.rgssVersion);
+	writeBindings(d, "System/", 3);
 }
 
 #define READ(ptr, size, n, f) if (fread(ptr, size, n, f) < n) return false
@@ -306,8 +312,13 @@ BDescVec loadBindings(const Config &conf)
 {
 	BDescVec d;
 
+	// EDIT
+	/*
 	if (readBindings(d, conf.customDataPath, conf.rgssVersion))
 		return d;
-
+	*/
+	if (readBindings(d, "System/", 3))
+		return d;
+	
 	return genDefaultBindings(conf);
 }

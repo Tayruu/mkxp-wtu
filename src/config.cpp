@@ -29,12 +29,18 @@
 namespace json = json5pp;
 
 std::string prefPath(const char *org, const char *app) {
+	// EDIT
+	// Ignore appdata-based method
+	return std::string(""); 
+	
+	/*
     char *path = SDL_GetPrefPath(org, app);
     if (!path)
         return std::string("");
     std::string ret(path);
     SDL_free(path);
     return ret;
+	*/
 }
 
 void fillStringVec(json::value &item, std::vector<std::string> &vector) {
@@ -325,11 +331,15 @@ try { exp } catch (...) {}
 }
 
 static void setupScreenSize(Config &conf) {
-    if (conf.defScreenW <= 0)
-        conf.defScreenW = (conf.rgssVersion == 1 ? 640 : 544);
-    
-    if (conf.defScreenH <= 0)
-        conf.defScreenH = (conf.rgssVersion == 1 ? 480 : 416);
+  // EDIT
+  conf.defScreenW = (848);
+  conf.defScreenH = (480);
+  /*
+  if (conf.defScreenW <= 0)
+    conf.defScreenW = (conf.rgssVersion == 1 ? 640 : 544);
+
+  if (conf.defScreenH <= 0)
+    conf.defScreenH = (conf.rgssVersion == 1 ? 480 : 416);*/
 }
 
 bool Config::fontIsSolid(const char *fontName) const {
@@ -343,8 +353,8 @@ void Config::readGameINI() {
     if (!customScript.empty()) {
         game.title = customScript.c_str();
         
-        if (rgssVersion == 0)
-            rgssVersion = 1;
+		// EDIT
+        rgssVersion = 3;
         
         setupScreenSize(*this);
         
@@ -396,22 +406,25 @@ void Config::readGameINI() {
     customDataPath = mkxp_fs::normalizePath(prefPath(dataPathOrg.c_str(), dataPathApp.c_str()).c_str(), 0, 1);
     
     if (rgssVersion == 0) {
+		// EDIT
+		rgssVersion = 3;
         /* Try to guess RGSS version based on Data/Scripts extension */
+		/*
         rgssVersion = 1;
-        
+
         if (!game.scripts.empty()) {
-            const char *p = &game.scripts[game.scripts.size()];
-            const char *head = &game.scripts[0];
-            
-            while (--p != head)
-                if (*p == '.')
-                    break;
-            
-            if (!strcmp(p, ".rvdata"))
-                rgssVersion = 2;
-            else if (!strcmp(p, ".rvdata2"))
-                rgssVersion = 3;
-        }
+          const char *p = &game.scripts[game.scripts.size()];
+          const char *head = &game.scripts[0];
+
+          while (--p != head)
+            if (*p == '.')
+              break;
+
+          if (!strcmp(p, ".rvdata"))
+            rgssVersion = 2;
+          else if (!strcmp(p, ".rvdata2"))
+            rgssVersion = 3;
+        }*/
     }
     
     setupScreenSize(*this);

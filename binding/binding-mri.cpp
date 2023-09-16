@@ -164,7 +164,6 @@ static void mriBindingInit() {
 	// EDIT
     /*if (rgssVer == 1) {*/
         windowBindingInit();
-	//windowVXBindingInit();
         tilemapBindingInit();
     /*} else {
         windowVXBindingInit();

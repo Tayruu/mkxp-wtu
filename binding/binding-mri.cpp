@@ -63,9 +63,9 @@ extern "C" {
 #include <SDL_loadso.h>
 #include <SDL_power.h>
 
-extern const char module_rpg1[];
-extern const char module_rpg2[];
-extern const char module_rpg3[];
+//extern const char module_rpg1[];
+//extern const char module_rpg2[];
+//extern const char module_rpg3[];
 
 static void mriBindingExecute();
 static void mriBindingTerminate();
@@ -163,8 +163,8 @@ static void mriBindingInit() {
     
 	// EDIT
     /*if (rgssVer == 1) {*/
-        //windowBindingInit();
-	windowVXBindingInit();
+        windowBindingInit();
+	//windowVXBindingInit();
         tilemapBindingInit();
     /*} else {
         windowVXBindingInit();

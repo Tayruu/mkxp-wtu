@@ -605,7 +605,7 @@ struct WindowPrivate
 
 		glState.scissorTest.pushSet(true);
 		glState.scissorBox.push();
-		glState.scissorBox.setIntersect(windowRect);
+		//glState.scissorBox.setIntersect(windowRect);
 
 		SimpleAlphaShader &shader = shState->shaders().simpleAlpha;
 		shader.bind();

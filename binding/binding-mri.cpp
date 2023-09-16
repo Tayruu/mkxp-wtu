@@ -163,7 +163,8 @@ static void mriBindingInit() {
     
 	// EDIT
     /*if (rgssVer == 1) {*/
-        windowBindingInit();
+        //windowBindingInit();
+	windowVXBindingInit();
         tilemapBindingInit();
     /*} else {
         windowVXBindingInit();
@@ -213,7 +214,7 @@ static void mriBindingInit() {
     else
         assert(!"unreachable");*/
 	// EDIT
-    rb_eval_string(module_rpg3);
+    //rb_eval_string(module_rpg3);
     
     VALUE mod = rb_define_module("System");
     _rb_define_module_function(mod, "delta", mkxpDelta);

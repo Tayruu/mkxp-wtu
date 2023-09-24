@@ -33,7 +33,7 @@ binding_source = [files(
     'filesystem-binding.cpp',
     #'windowvx-binding.cpp',
     #'tilemapvx-binding.cpp',
-    #'http-binding.cpp'
+    'http-binding.cpp'
 )]
 
 if steamworks == true

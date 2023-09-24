@@ -29,11 +29,11 @@ binding_source = [files(
     'window-binding.cpp',
     'tilemap-binding.cpp',
     'audio-binding.cpp',
-    'module_rpg.cpp',
+    #'module_rpg.cpp',
     'filesystem-binding.cpp',
-    'windowvx-binding.cpp',
-    'tilemapvx-binding.cpp',
-    'http-binding.cpp'
+    #'windowvx-binding.cpp',
+    #'tilemapvx-binding.cpp',
+    #'http-binding.cpp'
 )]
 
 if steamworks == true

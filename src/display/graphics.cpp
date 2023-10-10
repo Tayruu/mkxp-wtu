@@ -64,7 +64,7 @@
 #include <cmath>
 #include <climits>
 
-
+// EDIT
 //#define DEF_SCREEN_W (rgssVer == 1 ? 640 : 544)
 //#define DEF_SCREEN_H (rgssVer == 1 ? 480 : 416)
 //#define DEF_FRAMERATE (rgssVer == 1 ? 40 : 60)
@@ -73,7 +73,7 @@
 #define DEF_FRAMERATE 60
 
 //#define DEF_MAX_VIDEO_FRAMES 30
-#define DEF_MAX_VIDEO_FRAMES 60
+#define DEF_MAX_VIDEO_FRAMES 30
 #define VIDEO_DELAY 10
 #define MOVIE_AUDIO_BUFFER_SIZE 2048
 #define AUDIO_BUFFER_LEN_MS 2000

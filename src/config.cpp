@@ -180,7 +180,7 @@ void Config::read(int argc, char *argv[]) {
         {"SESourceCount", 6},
         {"BGMTrackCount", 1},
         {"customScript", ""},
-        {"pathCache", true},
+        {"pathCache", false},
         {"useScriptNames", 1},
         {"preloadScript", json::array({})},
         {"RTP", json::array({})},

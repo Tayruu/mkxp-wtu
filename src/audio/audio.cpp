@@ -24,7 +24,6 @@
 #include "audiostream.h"
 #include "soundemitter.h"
 #include "sharedstate.h"
-#include "sharedmidistate.h"
 #include "eventthread.h"
 #include "sdl-util.h"
 #include "exception.h"

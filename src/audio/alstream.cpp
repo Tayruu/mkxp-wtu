@@ -22,7 +22,6 @@
 #include "alstream.h"
 
 #include "sharedstate.h"
-#include "sharedmidistate.h"
 #include "eventthread.h"
 #include "filesystem.h"
 #include "exception.h"

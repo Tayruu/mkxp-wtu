@@ -402,11 +402,6 @@ void Audio::seStop()
 	p->se.stop();
 }
 
-void Audio::setupMidi()
-{
-	shState->midiState().initIfNeeded(shState->config());
-}
-
 float Audio::bgmPos(int track)
 {
 	return p->getTrackByIndex(track)->playingOffset();

@@ -283,20 +283,6 @@ $(DOWNLOADS)/openal/cmakebuild/Makefile: $(DOWNLOADS)/openal/CMakeLists.txt
 $(DOWNLOADS)/openal/CMakeLists.txt:
 	$(CLONE) $(GITHUB)/kcat/openal-soft -b 1.24.3 $(DOWNLOADS)/openal
 
-# FluidSynth
-fluidsynth: init_dirs $(LIBDIR)/libfluidsynth.a
-
-$(LIBDIR)/libfluidsynth.a: $(DOWNLOADS)/fluidsynth/cmakebuild/Makefile
-	cd $(DOWNLOADS)/fluidsynth/cmakebuild; \
-	make -j$(NPROC); make install
-
-$(DOWNLOADS)/fluidsynth/cmakebuild/Makefile: $(DOWNLOADS)/fluidsynth/CMakeLists.txt
-	cd $(DOWNLOADS)/fluidsynth; mkdir cmakebuild; cd cmakebuild; \
-	$(CMAKE) -DBUILD_SHARED_LIBS=no -Denable-sdl2=no -Denable-readline=no
-
-$(DOWNLOADS)/fluidsynth/CMakeLists.txt:
-	$(CLONE) $(GITHUB)/mkxp-z/fluidsynth-sans-glib $(DOWNLOADS)/fluidsynth
-
 # OpenSSL
 openssl: init_dirs $(LIBDIR)/libssl.a
 $(LIBDIR)/libssl.a: $(DOWNLOADS)/openssl/Makefile
@@ -342,5 +328,5 @@ powerwash: clean-downloads
 clean-downloads:
 	-rm -rf downloads
 
-deps-core: libtheora libvorbis pixman libpng libjpeg physfs sdl2 sdl2image sdlsound sdl2ttf openal openssl fluidsynth uchardet
+deps-core: libtheora libvorbis pixman libpng libjpeg physfs sdl2 sdl2image sdlsound sdl2ttf openal openssl uchardet
 everything: deps-core ruby

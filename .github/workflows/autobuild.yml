@@ -137,7 +137,11 @@ jobs:
         id: short-sha
         with:
           length: 7
-
+		  
+        - uses: ruby/setup-ruby@v1
+          with:
+            ruby-version: '3.2'
+		
       - name: Remove pre-existing homebrew packages
         run: brew remove --force $(brew list)
 

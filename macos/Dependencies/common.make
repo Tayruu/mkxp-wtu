@@ -52,6 +52,8 @@ RUBY_CONFIGURE_ARGS := \
 	--disable-rubygems \
 	--disable-install-doc \
 	--build=$(RBUILD) \
+	--with-baseruby=/Users/runner/hostedtoolcache/Ruby/3.2.9/arm64/bin/ruby \
+	--with-coroutine=ucontext \
 	${EXTRA_RUBY_CONFIG_ARGS}
 
 CONFIGURE := $(CONFIGURE_ENV) ./configure $(CONFIGURE_ARGS)
@@ -310,7 +312,7 @@ $(LIBDIR)/libruby.3.4.dylib: $(DOWNLOADS)/ruby/Makefile
 $(DOWNLOADS)/ruby/Makefile: $(DOWNLOADS)/ruby/configure
 	cd $(DOWNLOADS)/ruby; \
 	export $(CONFIGURE_ENV); \
-	export CFLAGS="-flto=full -DRUBY_FUNCTION_NAME_STRING=__func__ $$CFLAGS"; \
+	export CFLAGS="-flto=full -DRUBY_FUNCTION_NAME_STRING=__func__ $$CFLAGS -DHAVE_RB_HASH_BULK_INSERT -DHAVE_RB_REG_ONIG_MATCH"; \
 	export LDFLAGS="-flto=full $$LDFLAGS"; \
 	./configure $(CONFIGURE_ARGS) $(RUBY_CONFIGURE_ARGS) $(RUBY_FLAGS)
 
@@ -318,7 +320,7 @@ $(DOWNLOADS)/ruby/configure: $(DOWNLOADS)/ruby/configure.ac
 	cd $(DOWNLOADS)/ruby; autoreconf -i
 
 $(DOWNLOADS)/ruby/configure.ac:
-	$(CLONE) $(GITHUB)/Tayruu/ruby $(DOWNLOADS)/ruby --single-branch -b mkxp-z-3.1.3 --depth 1;
+	$(CLONE) $(GITHUB)/Tayruu/ruby $(DOWNLOADS)/ruby --single-branch -b mkxp-z-3.4 --depth 1;
 	sed -i '' '/: $${PRELOADENV=DYLD_INSERT_LIBRARIES}/g' $(DOWNLOADS)/ruby/configure.ac
 
 # ====

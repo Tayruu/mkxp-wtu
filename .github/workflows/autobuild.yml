@@ -61,9 +61,9 @@ jobs:
           mkdir build/artifact
           cd build/artifact
           cp /mingw64/bin/zlib1.dll .
-          cp ../../windows/build-mingw64/bin/x64-msvcrt-ruby310.dll .
-          cp -r ../../windows/build-mingw64/lib/ruby/3.1.0 .
-          mv ./3.1.0 ./stdlib
+          cp ../../windows/build-mingw64/bin/x64-msvcrt-ruby340.dll .
+          cp -r ../../windows/build-mingw64/lib/ruby/3.4.0 .
+          mv ./3.4.0 ./stdlib
           cp ../mkxp-z.exe .
           cp ../../mkxp.json .
 
@@ -118,8 +118,8 @@ jobs:
       - name: Prepare archive
         run: |
           cd build/local
-          cp -r ../../linux/build-x86_64/lib/ruby/3.1.0 .
-          mv ./3.1.0 ./stdlib
+          cp -r ../../linux/build-x86_64/lib/ruby/3.4.0 .
+          mv ./3.4.0 ./stdlib
           cp ../../mkxp.json .
           cd ..
           zip -r local.zip local

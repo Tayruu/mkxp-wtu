@@ -320,7 +320,7 @@ $(DOWNLOADS)/ruby/configure: $(DOWNLOADS)/ruby/configure.ac
 	cd $(DOWNLOADS)/ruby; autoreconf -i
 
 $(DOWNLOADS)/ruby/configure.ac:
-	$(CLONE) $(GITHUB)/Tayruu/ruby $(DOWNLOADS)/ruby --single-branch -b mkxp-z-3.4 --depth 1;
+	$(CLONE) $(GITHUB)/Eblo/ruby $(DOWNLOADS)/ruby --single-branch -b mkxp-z-3.4 --depth 1;
 	sed -i '' '/: $${PRELOADENV=DYLD_INSERT_LIBRARIES}/g' $(DOWNLOADS)/ruby/configure.ac
 
 # ====

@@ -329,7 +329,7 @@ $(DOWNLOADS)/ruby/configure: $(DOWNLOADS)/ruby/configure.ac
 	cd $(DOWNLOADS)/ruby; autoreconf -i
 
 $(DOWNLOADS)/ruby/configure.ac:
-	$(CLONE) $(GITHUB)/Tayruu/ruby $(DOWNLOADS)/ruby --single-branch --branch mkxp-z-3.4 --depth 1;
+	$(CLONE) $(GITHUB)/Eblo/ruby $(DOWNLOADS)/ruby --single-branch --branch mkxp-z-3.4 --depth 1;
 
 # ====
 init_dirs:
